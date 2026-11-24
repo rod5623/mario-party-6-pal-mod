@@ -109,7 +109,7 @@ python -m tools.patches.apply_bowser_bonus_patch
 python -m tools.patches.apply_bowser_minigame_patch
 ```
 
-Outputs, to copy into the extracted game before rebuilding the image with GCR:
+Outputs, to copy into the extracted game before rebuilding the image with `build_iso`:
 
 - **Required:** `build\GP6P01\main.dol` replaces `&&systemdata\Start.dol`. It contains every gameplay change.
 - **Optional:** `build\GP6P01\files\mess\messdata_eng.bin` replaces `files\mess\messdata_eng.bin`. It only rewords the English Bowser Bonus Star message; play in English to see it.

@@ -1,5 +1,5 @@
 # Python packages for the patch scripts: pip install -r requirements.txt
-# Tested with Python 3.11.8, Pillow 13.0.0 and requests 2.32.5.
+# Tested with Python 3.11.8, Pillow 13.0.0, requests 2.32.5 and gclib at the commit below.
 #
 # This file only lists Python packages. The other downloads (decomp-toolkit v1.8.4, Ninja 1.13.2,
 # VGAudioCli, Dolphin, GameCube Rebuilder, and vgmstream for audio work) are listed with versions
@@ -7,3 +7,4 @@
 
 Pillow      # images: thumbnails, card art, icons, instruction pictures, models' textures
 requests    # only for tools/upload_progress.py (decomp progress reporting); the patches don't need it
+gclib @ git+https://github.com/LagoLunatic/gclib.git@dff7278b54d4b7c94ddb4dfbe3251203f098b3cb  # ISO rebuild: tools/scripts/build_iso.py (also pulls numpy, imagequant)
