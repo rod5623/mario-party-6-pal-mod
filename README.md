@@ -59,12 +59,12 @@ clone needs them. The scripts expect the exact file names shown.
 | Windows | 10 or 11 | — | The scripts call `.exe` tools |
 | Your own Mario Party 6 **PAL** disc (GP6P01) | Retail | — | Dump it with a homebrew dumping tool on a Wii (e.g. CleanRip) or GameCube |
 | Python | 3.11 or newer | on `PATH` | [python.org](https://www.python.org/downloads/) |
-| Python packages (Pillow, requests) | see `requirements.txt` | — | `pip install -r requirements.txt` |
+| Python packages (Pillow, requests, gclib) | see `requirements.txt` | — | `pip install -r requirements.txt` |
 | decomp-toolkit | **v1.8.4** | `src/tools/bin/dtk-windows-x86_64.exe` | [GitHub release](https://github.com/encounter/decomp-toolkit/releases/tag/v1.8.4) |
 | Ninja | **1.13.2** | `src/tools/bin/ninja.exe` | [GitHub release](https://github.com/ninja-build/ninja/releases/tag/v1.13.2) (`ninja-win.zip`) |
 | VGAudio CLI | latest | `src/tools/bin/VGAudioCli.exe` | [GitHub releases](https://github.com/Thealexbarney/VGAudio/releases). Encodes Close Call's music; only the `closecall` step needs it. |
 | Dolphin | any recent | anywhere | [dolphin-emu.org](https://dolphin-emu.org/). Extracts the disc and plays the result. |
-| GameCube Rebuilder (GCR) | 1.1 | anywhere | romhacking.net. Exports `root/` and rebuilds the ISO. Needs .NET Framework 4.5.2 or newer (included in Windows 10 and 11). |
+| GameCube Rebuilder (GCR) | 1.1 | anywhere | romhacking.net. Exports `root/` (the ISO is rebuilt with `build_iso`). Needs .NET Framework 4.5.2 or newer (included in Windows 10 and 11). |
 
 **Downloaded automatically.** The first `ninja` run fetches these into `src/build/`, so it needs
 internet access:
@@ -94,6 +94,7 @@ compare decompiled functions with the original. `configure.py` writes its `objdi
 3. **Extract it for playing.** Open the ISO in GameCube Rebuilder and export its root into
    `root/`, so that you get `root/&&systemdata/Start.dol`, `root/data/`, `root/dll/` and so on.
    Keep a copy of this clean `root/` somewhere else. You'll need it to undo the patches.
+4. **Copy the ISO itself** to `src/orig/GP6P01.iso`. `build_iso` uses it as the base disc.
 
 ## Build and patch
 
@@ -134,11 +135,20 @@ The board patches (Faire Square, Castaway Bay, E. Gadd's Garage) edit `root/data
 
 ## Play
 
-Rebuild an ISO from `root/` with GameCube Rebuilder and open it in Dolphin. Play in English:
-some patches change only the English message file.
+Rebuild an ISO from `root/` and open it in Dolphin. Play in English: some patches change only
+the English message file. From `src/`:
 
-GCR rebuilds using the disc's original file list, so it only keeps files that already exist on
-the disc. The patches therefore replace or extend existing files and never add new ones.
+```powershell
+python -m tools.scripts.build_iso
+```
+
+This reads your clean disc image from `src/orig/GP6P01.iso` (copy your dump there; it is not
+tracked) and writes `src/build/GP6P01-mod.iso`. Every file in `root/` that differs from the disc
+is replaced and every file the disc lacks is added, so keep stray files out of `root/`: the
+script lists the new ones it adds. Use `--base` and `--out` for other paths.
+
+GameCube Rebuilder can still rebuild `root/`, but it keeps only files that exist on the original
+disc, so anything a patch adds as a new file would be lost.
 
 ## Status
 

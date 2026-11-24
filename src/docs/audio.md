@@ -92,7 +92,7 @@ about 2 minutes, mostly the volume pass. Deploy it to `root/sound/MP6_SND.msm`.
    ```powershell
    python .\tools\apply_all.py --only sfx
    ```
-   Copy `build\GP6P01\files\sound\MP6_SND.msm` to `root\sound\`, rebuild the ISO with GCR, and
+   Copy `build\GP6P01\files\sound\MP6_SND.msm` to `root\sound\`, rebuild the ISO with `build_iso`, and
    test in Dolphin.
 
 If `patch_msm_bank` reports that the rebuilt SAMP is too large, trim the new clips until the bank
@@ -108,8 +108,8 @@ Follow `apply_closecall_patch.py` (`write_music()`):
 4. Play it with `HuAudSStreamPlay(id)` from code. Close Call does this in
    `src/REL/closecallDll/` with `BGM_STREAM`.
 
-The new track must be appended to the existing `MP6_Str.pdt`, never added as a new file: GCR
-drops new files from the disc.
+The new track must be appended to the existing `MP6_Str.pdt`, not added as a new file: the game
+plays streams by track number from that one file.
 
 ## Tools
 

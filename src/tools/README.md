@@ -190,7 +190,8 @@ Copy only files that exist: a subset run produces fewer files. Always copy the D
 RELs together, because the patched overlays need the relocated table in the new DOL. Back up
 `root` first (for example to a `root-backup` folder next to it).
 
-None of this is verified by the scripts; test in Dolphin.
+Then build the ISO from `src/`: `python -m tools.scripts.build_iso` (writes
+`srcuild\GP6P01-mod.iso`). None of the game behaviour is verified by the scripts; test in Dolphin.
 
 ## What is in this folder
 
@@ -205,7 +206,7 @@ dol_offset`), so a script can't be run by its file path.
 | `lib/` | Shared code the patches build on. See the table below. |
 | `audio/` | Sound tools: `musyxextract.py` (by Nisto, included with credit), `patch_msm_bank.py` and `scale_msm_volume.py` (used by `sfx`), `msm_dump.py` (dump sound banks to DSP/WAV: `python -m tools.audio.msm_dump --bank 000C --wav`), `pdt.py` (append music to `MP6_Str.pdt`), `thp.py` (write THP movies). |
 | `closecall/` | Builds the Close Call REL from C without ninja: `build_closecall_rel.py`, `closecall_assets.py`, and `p01_names.py`, which ports US symbol names onto P01 addresses (`build/GP6P01/include/p01_names.h`) and lists the P01 data directory numbers (`P01_DATA_*`). The US `DATA_*` values are wrong for Europe. |
-| `scripts/` | Stand-alone helpers: `masu_dump.py` (dump a board's space table: `python -m tools.scripts.masu_dump w03`), `make_castaway_wheel_icons.py`. |
+| `scripts/` | Stand-alone helpers: `masu_dump.py` (dump a board's space table: `python -m tools.scripts.masu_dump w03`), `make_castaway_wheel_icons.py`, `build_iso.py` (rebuilds the ISO from `root/` with gclib, replacing GCR, and keeps new files: `python -m tools.scripts.build_iso`, base `src/orig/GP6P01.iso`, output `src/build/GP6P01-mod.iso`). |
 | `assets/` | Art, models, music and the replacement sound clips (`assets/sfx/<bank>/*.dsp`) used by the patches. See `assets/NOTICE.md`. |
 | `bin/` | Put `ninja.exe`, `dtk-windows-x86_64.exe` and `VGAudioCli.exe` here, plus `vgmstream/` for audio work. Not tracked. |
 | `excluded_minigames.txt` | The list read by `minigame_exclusion`. |

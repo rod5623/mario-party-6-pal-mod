@@ -161,3 +161,63 @@ def make_board_file0(spaces):
         struct.pack_into(">HH", rec, 42, kind, len(links))
         out += rec + struct.pack(f">{len(links)}H", *links)
     return out
+
+
+# --- GameCube disc image (GCM) ---------------------------------------------------------------
+# boot.bin (0x440 bytes) at 0: game id, then u32 DOL offset at 0x420, FST offset 0x424, FST size
+# 0x428 and max FST size 0x42C. bi2.bin (0x2000) at 0x440. The apploader at 0x2440: a 0x20-byte
+# header with u32 body size at +0x14 and trailer size at +0x18. The FST is 12-byte entries (root
+# directory first), then the name table. A directory entry is u32 0x01000000|name offset, parent
+# index, index after its last descendant; a file entry is u32 name offset, data offset, size.
+
+def make_gcm(files, game_id=b"GP6P01", dol=None):
+    """files: {"dir/name.bin": bytes}, paths relative to the disc's files/ root."""
+    dol = dol or make_dol([("text", 0x80003100, b"\x60\x00\x00\x00" * 8)])
+    tree = {}
+    for path, data in files.items():
+        node = tree
+        *dirs, name = path.split("/")
+        for d in dirs:
+            node = node.setdefault(d, {})
+        node[name] = data
+
+    entries, names = [], bytearray()
+
+    def add(node, parent):
+        for name in sorted(node, key=str.lower):
+            name_offset = len(names)
+            names.extend(name.encode() + b"\0")
+            child = node[name]
+            if isinstance(child, dict):
+                index = len(entries)
+                entries.append(["dir", name_offset, parent, None])
+                add(child, index)
+                entries[index][3] = len(entries)
+            else:
+                entries.append(["file", name_offset, child])
+
+    entries.append(["dir", 0, 0, None])
+    add(tree, 0)
+    entries[0][3] = len(entries)
+
+    dol_offset = 0x2500
+    fst_offset = dol_offset + len(dol) + (-len(dol) % 0x100)
+    fst_size = 12 * len(entries) + len(names)
+    data_offset = fst_offset + fst_size + (-(fst_offset + fst_size) % 4)
+
+    fst, body = bytearray(), bytearray()
+    for entry in entries:
+        if entry[0] == "dir":
+            fst += struct.pack(">III", 0x01000000 | entry[1], entry[2], entry[3])
+        else:
+            fst += struct.pack(">III", entry[1], data_offset + len(body), len(entry[2]))
+            body += entry[2] + bytes(-len(entry[2]) % 4)
+    fst += names
+
+    disc = bytearray(data_offset)
+    disc[0:6] = game_id
+    struct.pack_into(">IIII", disc, 0x420, dol_offset, fst_offset, fst_size, fst_size)
+    struct.pack_into(">II", disc, 0x2440 + 0x14, 0x20, 0)       # apploader: 0x20 body, no trailer
+    disc[dol_offset:dol_offset + len(dol)] = dol
+    disc[fst_offset:fst_offset + len(fst)] = fst
+    return bytes(disc + body)

@@ -27,11 +27,16 @@ neighbours.**
    listings. Patches up to `mgtable_move` also edit the listings, so their changes survive a
    rebuild. Later patches edit the binary DOL only and would be lost. (`random_bonus` and
    `minigame_wins` run ninja themselves, which is why they come first.)
-4. **Never add new files to the disc.** The user rebuilds the ISO with GameCube Rebuilder (GCR),
-   which follows the original `Game.toc` and silently drops new files. A missing movie once
-   caused an endless black screen. Put new data inside existing files: append to archives,
-   append tracks to `sound/MP6_Str.pdt`, reuse placeholders such as `movie/dummy`, or reuse
-   the empty debug REL `dll/jbtestdll.rel`.
+4. **New disc files only survive `build_iso`.** `python -m tools.scripts.build_iso` (gclib)
+   writes a new FST, so files added to `root/` reach the disc; confirmed in game with a test
+   file in `data/` (boots, minigames play). GameCube Rebuilder (GCR) follows the original
+   `Game.toc` and silently drops new files: a missing movie once caused an endless black screen
+   when GCR was the rebuild tool. A new file is still only useful if the game can find it: the
+   data directories (`DataDirStat`, resolved by name in `data.c`) are a fixed table in the DOL,
+   and music is addressed by track number. So data for an existing directory still goes into
+   existing archives, tracks are appended to `sound/MP6_Str.pdt`, and placeholders such as
+   `movie/dummy` and `dll/jbtestdll.rel` stay the simplest route. A whole new file (a new board's
+   REL and archive) also needs the DOL table that names it extended.
 5. **Don't re-run one early step on its own.** Several patches rebuild a shared file from its
    current state and drop anything appended after their own part. Example: `wheel_of_fortune`
    truncates `data/board*.bin` back to its own icon, which deleted the Castaway wheel icons
@@ -73,7 +78,7 @@ backups/*.bak_before_<patch>   copies of root/ board files taken before the firs
   is how patches chain on the same file, e.g.
   `data = (built if built.exists() else source).read_bytes()`.
 - **Deploy:** outputs are copied into `root/` (see the top-level README), and the ISO is rebuilt
-  with GCR. `main.dol` goes to `root/&&systemdata/Start.dol`.
+  with `python -m tools.scripts.build_iso`. `main.dol` goes to `root/&&systemdata/Start.dol`.
 - **Asm listing names:** `ASM_INIT` = `asm/auto_00_80003100_init.s`,
   `ASM_TEXT` = `asm/auto_03_800EF6C8_text.s` (there is also `auto_03_80005920_text.s`),
   `ASM_DATA` = `asm/auto_07_80259D80_data.s`, `ASM_SDATA` = `asm/auto_09_802DCE00_sdata.s`.
@@ -454,6 +459,6 @@ tables, so patch both. Board numbers: `w02` E. Gadd's Garage, `w03` Faire Square
    - If you added or changed a helper in `tools/lib`, add a unit test for it in `src/tests/`
      (synthetic input from `tests/builders.py`, no game files). Then run `ruff check .` from the
      repository root and `python -m pytest` from `src/`.
-7. Deploy to `root/`, rebuild the ISO with GCR, and test in Dolphin (English). Dolphin "Invalid
+7. Deploy to `root/`, rebuild the ISO with `build_iso`, and test in Dolphin (English). Dolphin "Invalid
    read/write" messages with a PC usually mean a wrong data directory, a missing appended file
    or an overwritten cave.

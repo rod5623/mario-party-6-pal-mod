@@ -40,8 +40,11 @@ orbs, minigame pools).
   import dol_offset`). Import another patch only for what it made: caves, records, sections.
 - **Never run ninja after `mgtable_move` in the chain.** It rebuilds `main.dol` from asm and
   drops the binary-only patches.
-- **Never add new files to the disc.** The GCR rebuild drops them. Append to existing archives
-  or reuse placeholders.
+- **New disc files need `build_iso`.** Build the ISO with `python -m tools.scripts.build_iso`
+  (gclib), which keeps new files. GCR rebuilds from the original `Game.toc` and drops them. A
+  new file is only found if the game looks it up by name: data directories are a fixed table in
+  the DOL, so new data still goes into existing archives unless the patch also extends that
+  table. Music tracks are still appended to `MP6_Str.pdt`.
 - **Don't re-run one early step alone.** Run `python tools/apply_all.py --from <step>` to the
   end. Shared files are rebuilt by later steps.
 - **New steps go in `STEPS` in `src/tools/apply_all.py`,** with a comment saying why they go
@@ -78,7 +81,7 @@ user's Dolphin extract, and `root/` holds their GCR extract.
 - Run `apply_all.py --from <your step>` to the end. Diff `src/build/GP6P01` against a snapshot
   from before your change: only files you own should differ. The known exception is
   `w03Dll.rel`, which grows on every full run.
-- In-game testing needs the user: deploy to `root/`, rebuild with GCR, run in Dolphin. Don't
+- In-game testing needs the user: deploy to `root/`, rebuild with `build_iso`, run in Dolphin. Don't
   claim something works in game unless the user has confirmed it. Update the script's status
   note to match.
 

@@ -7,6 +7,8 @@ REPO = ROOT.parent
 BUILD = ROOT / "build" / "GP6P01"
 ORIG = ROOT / "orig" / "GP6P01"
 DOL = BUILD / "main.dol"
+BASE_ISO = ORIG.parent / "GP6P01.iso"   # the user's clean disc image (git-ignored)
+MOD_ISO = BUILD.parent / "GP6P01-mod.iso"
 
 ASM_TEXT = BUILD / "asm" / "auto_03_800EF6C8_text.s"
 ASM_DATA = BUILD / "asm" / "auto_07_80259D80_data.s"
