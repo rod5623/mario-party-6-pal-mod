@@ -1,0 +1,16 @@
+target-version = "py311"
+line-length = 120
+extend-exclude = ["src/build", "src/orig", "src/tools/bin"]
+
+[lint]
+select = ["F", "E9"]          # pyflakes errors and syntax errors only; no style churn
+ignore = ["F841"]             # unused locals exist in older scripts; revisit later
+
+[lint.per-file-ignores]
+# upstream decomp build files: leave untouched
+"src/tools/project.py" = ["F"]
+"src/tools/download_tool.py" = ["F"]
+"src/tools/decompctx.py" = ["F"]
+"src/tools/transform_dep.py" = ["F"]
+"src/tools/upload_progress.py" = ["F"]
+"src/tools/ninja_syntax.py" = ["F"]

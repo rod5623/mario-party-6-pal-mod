@@ -1,0 +1,791 @@
+object: orig/GP6P01/sys/main.dol
+hash: a13734d31e305e8d18e8f6f2c94082b894218042
+symbols: config/GP6P01/symbols.txt
+splits: config/GP6P01/splits.txt
+mw_comment_version: 11
+modules:
+- object: orig/GP6P01/files/dll/actmanDLL.rel
+  hash: ab7f097ef8ba383f14fdc942fce4f7595b92be78
+  symbols: config/GP6P01/rels/actmanDLL/symbols.txt
+  splits: config/GP6P01/rels/actmanDLL/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/bootDll.rel
+  hash: c8feae36c5820a37635e9d332cf1c1422201d144
+  symbols: config/GP6P01/rels/bootDll/symbols.txt
+  splits: config/GP6P01/rels/bootDll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/endingdll.rel
+  hash: 2593ca9d1a0f382e8824101e3f522eef471b855c
+  symbols: config/GP6P01/rels/endingdll/symbols.txt
+  splits: config/GP6P01/rels/endingdll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/fileseldll.rel
+  hash: 6172adf63010340607542f3c0d1f7f596b465576
+  symbols: config/GP6P01/rels/fileseldll/symbols.txt
+  splits: config/GP6P01/rels/fileseldll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/instDll.rel
+  hash: ca6ee1659601579fc6c066e37f15a49ffcfd4956
+  symbols: config/GP6P01/rels/instDll/symbols.txt
+  splits: config/GP6P01/rels/instDll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/jbtestdll.rel
+  hash: 5d8c1552831311947858028e75f62baaf34b4958
+  symbols: config/GP6P01/rels/jbtestdll/symbols.txt
+  splits: config/GP6P01/rels/jbtestdll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m601Dll.rel
+  hash: 4cd3d565098192b019206b12d8fd94dafbf77fa7
+  symbols: config/GP6P01/rels/m601Dll/symbols.txt
+  splits: config/GP6P01/rels/m601Dll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m602Dll.rel
+  hash: 2bedb2e1f89f9f49b887ccea6e2437f3d35a2c28
+  symbols: config/GP6P01/rels/m602Dll/symbols.txt
+  splits: config/GP6P01/rels/m602Dll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m603DLL.rel
+  hash: dc26058387b1a364067f9f8c237c71d26f5c25d5
+  symbols: config/GP6P01/rels/m603DLL/symbols.txt
+  splits: config/GP6P01/rels/m603DLL/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m604DLL.rel
+  hash: 1eabe840f7a9feb7481546184999238926847ac8
+  symbols: config/GP6P01/rels/m604DLL/symbols.txt
+  splits: config/GP6P01/rels/m604DLL/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m605DLL.rel
+  hash: 7e8a6f107c9b4192418ddabeff356ff221c91f1e
+  symbols: config/GP6P01/rels/m605DLL/symbols.txt
+  splits: config/GP6P01/rels/m605DLL/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m606Dll.rel
+  hash: f8f9d810a9fa3a78b7a173e73af938f68de6294c
+  symbols: config/GP6P01/rels/m606Dll/symbols.txt
+  splits: config/GP6P01/rels/m606Dll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m607DLL.rel
+  hash: 7e3b6f9c9fed1579965834f2c976e17027e184b7
+  symbols: config/GP6P01/rels/m607DLL/symbols.txt
+  splits: config/GP6P01/rels/m607DLL/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m608dll.rel
+  hash: 4bd38019c78f93e20ea86840364fb3c3342da995
+  symbols: config/GP6P01/rels/m608dll/symbols.txt
+  splits: config/GP6P01/rels/m608dll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m609dll.rel
+  hash: 76acfd885c0393cb2620c6947a248cc90716d882
+  symbols: config/GP6P01/rels/m609dll/symbols.txt
+  splits: config/GP6P01/rels/m609dll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m610DLL.rel
+  hash: 415efa71f9ec1309147345146c8303d2d1dd2fe4
+  symbols: config/GP6P01/rels/m610DLL/symbols.txt
+  splits: config/GP6P01/rels/m610DLL/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m611DLL.rel
+  hash: fdffc68a6719addb5f94606d615105d5a6ceae3b
+  symbols: config/GP6P01/rels/m611DLL/symbols.txt
+  splits: config/GP6P01/rels/m611DLL/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m612dll.rel
+  hash: 68a565399c5169496141e924ef1267eef045280d
+  symbols: config/GP6P01/rels/m612dll/symbols.txt
+  splits: config/GP6P01/rels/m612dll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m613Dll.rel
+  hash: 4161a9994d700ebf249db7adf03c34c97a0744fd
+  symbols: config/GP6P01/rels/m613Dll/symbols.txt
+  splits: config/GP6P01/rels/m613Dll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m614Dll.rel
+  hash: ef8f923879be43efc56003b2e1c0146ed7514467
+  symbols: config/GP6P01/rels/m614Dll/symbols.txt
+  splits: config/GP6P01/rels/m614Dll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m615DLL.rel
+  hash: 4c0315f6a19d16a0b575841b894e9e1fdf380e7f
+  symbols: config/GP6P01/rels/m615DLL/symbols.txt
+  splits: config/GP6P01/rels/m615DLL/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m616dll.rel
+  hash: 9c6152aed7be6bfed4043c6cc2029724833a1a71
+  symbols: config/GP6P01/rels/m616dll/symbols.txt
+  splits: config/GP6P01/rels/m616dll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m617dll.rel
+  hash: fd92c5689bb06f1dfcb35765a7183bcbf2613277
+  symbols: config/GP6P01/rels/m617dll/symbols.txt
+  splits: config/GP6P01/rels/m617dll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m618dll.rel
+  hash: 3db968516efc0080d4a3a08106611057ee95c7ec
+  symbols: config/GP6P01/rels/m618dll/symbols.txt
+  splits: config/GP6P01/rels/m618dll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m619Dll.rel
+  hash: 5fc985f0aeb7f0a78cb6204e1fba9d8d1ee17c8a
+  symbols: config/GP6P01/rels/m619Dll/symbols.txt
+  splits: config/GP6P01/rels/m619Dll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m620Dll.rel
+  hash: 1ef4ba037740fe4771fb41ffd5c2007399154c61
+  symbols: config/GP6P01/rels/m620Dll/symbols.txt
+  splits: config/GP6P01/rels/m620Dll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m621dll.rel
+  hash: 3652747d0d7be1aa0dfca8795f4e4bbcf23a7d95
+  symbols: config/GP6P01/rels/m621dll/symbols.txt
+  splits: config/GP6P01/rels/m621dll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m622DLL.rel
+  hash: 18359f0ee8378a4214a43621e3312e37360562cb
+  symbols: config/GP6P01/rels/m622DLL/symbols.txt
+  splits: config/GP6P01/rels/m622DLL/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m623DLL.rel
+  hash: cc8761e955b26688756f9d699e1c87b2b9eeb7e2
+  symbols: config/GP6P01/rels/m623DLL/symbols.txt
+  splits: config/GP6P01/rels/m623DLL/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m624DLL.rel
+  hash: a14947318b4bfa4533f3586be36fd6895f619119
+  symbols: config/GP6P01/rels/m624DLL/symbols.txt
+  splits: config/GP6P01/rels/m624DLL/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m625Dll.rel
+  hash: 0641d47aa854aa63aba9542e465e908067e6de30
+  symbols: config/GP6P01/rels/m625Dll/symbols.txt
+  splits: config/GP6P01/rels/m625Dll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m626Dll.rel
+  hash: b1d47aa7edd2c4125dfd605c3d5b6058460dfc69
+  symbols: config/GP6P01/rels/m626Dll/symbols.txt
+  splits: config/GP6P01/rels/m626Dll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m627dll.rel
+  hash: c68371940d16580a35fc2ec482894946c8e56f12
+  symbols: config/GP6P01/rels/m627dll/symbols.txt
+  splits: config/GP6P01/rels/m627dll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m628DLL.rel
+  hash: 2b89d6b4c6ef2c1779bd0a9239b3968aa331f308
+  symbols: config/GP6P01/rels/m628DLL/symbols.txt
+  splits: config/GP6P01/rels/m628DLL/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m629Dll.rel
+  hash: 07e6d7e3b714cfca69d38b8ac8a17ef8e86104a3
+  symbols: config/GP6P01/rels/m629Dll/symbols.txt
+  splits: config/GP6P01/rels/m629Dll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m630dll.rel
+  hash: ff88acd02c19ee02583404e84f8d5601211da4aa
+  symbols: config/GP6P01/rels/m630dll/symbols.txt
+  splits: config/GP6P01/rels/m630dll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m631Dll.rel
+  hash: e9c200d7c7f96926fea47b7e782d2b57584f674f
+  symbols: config/GP6P01/rels/m631Dll/symbols.txt
+  splits: config/GP6P01/rels/m631Dll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m632dll.rel
+  hash: 77bd092e746c386111f2d03b46a84e8e4c83e0a4
+  symbols: config/GP6P01/rels/m632dll/symbols.txt
+  splits: config/GP6P01/rels/m632dll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m633dll.rel
+  hash: 3a40a6d438d79bb2521096765591c53a500cc14a
+  symbols: config/GP6P01/rels/m633dll/symbols.txt
+  splits: config/GP6P01/rels/m633dll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m634DLL.rel
+  hash: 048f7d69992085d5a5a44494a12fb205365b5dd8
+  symbols: config/GP6P01/rels/m634DLL/symbols.txt
+  splits: config/GP6P01/rels/m634DLL/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m635dll.rel
+  hash: 04cbab4a2ee2db29427f8721c972f1985fba23a6
+  symbols: config/GP6P01/rels/m635dll/symbols.txt
+  splits: config/GP6P01/rels/m635dll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m636dll.rel
+  hash: f6d0aef58f4f10dcbc13c3a321f10582774c4cfe
+  symbols: config/GP6P01/rels/m636dll/symbols.txt
+  splits: config/GP6P01/rels/m636dll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m637dll.rel
+  hash: fd4fb1df71edb51a5eff2a7730623e187d8a7586
+  symbols: config/GP6P01/rels/m637dll/symbols.txt
+  splits: config/GP6P01/rels/m637dll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m638Dll.rel
+  hash: 2a3cc0a06b229c28c7fb1de1eb864869101727b8
+  symbols: config/GP6P01/rels/m638Dll/symbols.txt
+  splits: config/GP6P01/rels/m638Dll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m639DLL.rel
+  hash: 4236cf04c5bf0148e002673ec6f05bc2fb9e10f1
+  symbols: config/GP6P01/rels/m639DLL/symbols.txt
+  splits: config/GP6P01/rels/m639DLL/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m640dll.rel
+  hash: 2a667aee0bf3efd179c43f866b76c55e8bf35fff
+  symbols: config/GP6P01/rels/m640dll/symbols.txt
+  splits: config/GP6P01/rels/m640dll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m641Dll.rel
+  hash: f36e1b1c787e7b89b25d244d5a4a092570db795c
+  symbols: config/GP6P01/rels/m641Dll/symbols.txt
+  splits: config/GP6P01/rels/m641Dll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m642dll.rel
+  hash: f906e849b3a2c4b6275a5bfde519c90a70705d3b
+  symbols: config/GP6P01/rels/m642dll/symbols.txt
+  splits: config/GP6P01/rels/m642dll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m643DLL.rel
+  hash: 0cabf8bdd62671f8a4f90b122a6c467c43a2a73d
+  symbols: config/GP6P01/rels/m643DLL/symbols.txt
+  splits: config/GP6P01/rels/m643DLL/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m644dll.rel
+  hash: 4e476ecb9fb43a317016263427b54cc2d48062ae
+  symbols: config/GP6P01/rels/m644dll/symbols.txt
+  splits: config/GP6P01/rels/m644dll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m645DLL.rel
+  hash: 0f4bf4e1dd5d2c3c7f0b3d4508fe3aae67b89e21
+  symbols: config/GP6P01/rels/m645DLL/symbols.txt
+  splits: config/GP6P01/rels/m645DLL/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m646Dll.rel
+  hash: c5151f8452852f905cc6107df52de4b07ff0c717
+  symbols: config/GP6P01/rels/m646Dll/symbols.txt
+  splits: config/GP6P01/rels/m646Dll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m647dll.rel
+  hash: 4a54fda13f8bfcbc7799c1cab11be7ee6b99127c
+  symbols: config/GP6P01/rels/m647dll/symbols.txt
+  splits: config/GP6P01/rels/m647dll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m648DLL.rel
+  hash: f43269e01690c45e1708c5e7785d1afd95bfffae
+  symbols: config/GP6P01/rels/m648DLL/symbols.txt
+  splits: config/GP6P01/rels/m648DLL/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m649Dll.rel
+  hash: e602c4405207e0b081ba226f6166efed42628d9b
+  symbols: config/GP6P01/rels/m649Dll/symbols.txt
+  splits: config/GP6P01/rels/m649Dll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m650dll.rel
+  hash: 94e228cdd8c54b3e44122059f385d3a9808f8dd6
+  symbols: config/GP6P01/rels/m650dll/symbols.txt
+  splits: config/GP6P01/rels/m650dll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m651dll.rel
+  hash: cb455d94136f32df7ee5045c09cdc7e66cf5a5e0
+  symbols: config/GP6P01/rels/m651dll/symbols.txt
+  splits: config/GP6P01/rels/m651dll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m652DLL.rel
+  hash: 570457e08d6485122eb5a2e9fba362566ea6b44c
+  symbols: config/GP6P01/rels/m652DLL/symbols.txt
+  splits: config/GP6P01/rels/m652DLL/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m653DLL.rel
+  hash: 0bd9c4abad165187d2d9a183def580f7fc7d2de4
+  symbols: config/GP6P01/rels/m653DLL/symbols.txt
+  splits: config/GP6P01/rels/m653DLL/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m654DLL.rel
+  hash: 3782a650e45a3da61bc6e5770e9f8793b5aac7e0
+  symbols: config/GP6P01/rels/m654DLL/symbols.txt
+  splits: config/GP6P01/rels/m654DLL/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m655DLL.rel
+  hash: 43f002647e65ca68c500481e2c3f2c562a414eb7
+  symbols: config/GP6P01/rels/m655DLL/symbols.txt
+  splits: config/GP6P01/rels/m655DLL/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m656DLL.rel
+  hash: b455b8c4735ad2dc3dfadadf34ef8a087d6f8b73
+  symbols: config/GP6P01/rels/m656DLL/symbols.txt
+  splits: config/GP6P01/rels/m656DLL/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m657Dll.rel
+  hash: 3040567ec1909e65e4ffee3742c238c2aac084f3
+  symbols: config/GP6P01/rels/m657Dll/symbols.txt
+  splits: config/GP6P01/rels/m657Dll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m658dll.rel
+  hash: 389f0814158fa1311fa65c55e4e457ce466b60b1
+  symbols: config/GP6P01/rels/m658dll/symbols.txt
+  splits: config/GP6P01/rels/m658dll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m659Dll.rel
+  hash: 7972b7d1c8c8f012519bef93b5b7c833ffb8ab21
+  symbols: config/GP6P01/rels/m659Dll/symbols.txt
+  splits: config/GP6P01/rels/m659Dll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m660dll.rel
+  hash: 58fca361ecda53b095772923296d1272c0261cd6
+  symbols: config/GP6P01/rels/m660dll/symbols.txt
+  splits: config/GP6P01/rels/m660dll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m661dll.rel
+  hash: 89bcfda9a2e1887f8f1ef33abaf81775132e8a58
+  symbols: config/GP6P01/rels/m661dll/symbols.txt
+  splits: config/GP6P01/rels/m661dll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m662dll.rel
+  hash: 042b8b5cb4ad3da8237a53d6a543b419338e1822
+  symbols: config/GP6P01/rels/m662dll/symbols.txt
+  splits: config/GP6P01/rels/m662dll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m663dll.rel
+  hash: 741c2e8120d8194e52d24e4a8227376e18881547
+  symbols: config/GP6P01/rels/m663dll/symbols.txt
+  splits: config/GP6P01/rels/m663dll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m664dll.rel
+  hash: dddef2d07238d44cacd5f6d62a11268def2dad70
+  symbols: config/GP6P01/rels/m664dll/symbols.txt
+  splits: config/GP6P01/rels/m664dll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m665dll.rel
+  hash: b9287843151db095de1d0514d6191269c53ef061
+  symbols: config/GP6P01/rels/m665dll/symbols.txt
+  splits: config/GP6P01/rels/m665dll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m666dll.rel
+  hash: 06a5bb7b2c1d410b116f093eb27ee5d82519ac9b
+  symbols: config/GP6P01/rels/m666dll/symbols.txt
+  splits: config/GP6P01/rels/m666dll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m667dll.rel
+  hash: cbd0b22f5528613b7334ff0e17b2b2e6718b4186
+  symbols: config/GP6P01/rels/m667dll/symbols.txt
+  splits: config/GP6P01/rels/m667dll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m668DLL.rel
+  hash: 3f5ad6bbfe5114a6a464a11b3263d3a51b9bc0a9
+  symbols: config/GP6P01/rels/m668DLL/symbols.txt
+  splits: config/GP6P01/rels/m668DLL/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m669DLL.rel
+  hash: 9ca77ec28dc52b9ee0af2f31d2e5c3b856a468c5
+  symbols: config/GP6P01/rels/m669DLL/symbols.txt
+  splits: config/GP6P01/rels/m669DLL/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m670dll.rel
+  hash: 151588bdd356584bab2670cd23c6318654212e5c
+  symbols: config/GP6P01/rels/m670dll/symbols.txt
+  splits: config/GP6P01/rels/m670dll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m671DLL.rel
+  hash: 6efbcb83563e7799f1e5cc4e657bd20ec801f19a
+  symbols: config/GP6P01/rels/m671DLL/symbols.txt
+  splits: config/GP6P01/rels/m671DLL/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m672DLL.rel
+  hash: 73f1ffc344a588e817bcfc62b20f201920227729
+  symbols: config/GP6P01/rels/m672DLL/symbols.txt
+  splits: config/GP6P01/rels/m672DLL/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m673DLL.rel
+  hash: 0dfa25e04d25b60d6ed9d26579a973c8e5e60e42
+  symbols: config/GP6P01/rels/m673DLL/symbols.txt
+  splits: config/GP6P01/rels/m673DLL/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m674Dll.rel
+  hash: 1da279a98bc1278691081b62168ae93daa6602bb
+  symbols: config/GP6P01/rels/m674Dll/symbols.txt
+  splits: config/GP6P01/rels/m674Dll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m675Dll.rel
+  hash: db10dd3db92e2caef255d14c5afb0ee32ccd4e43
+  symbols: config/GP6P01/rels/m675Dll/symbols.txt
+  splits: config/GP6P01/rels/m675Dll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m676Dll.rel
+  hash: 7ee364062a84311644e210145f3263a4bc96214d
+  symbols: config/GP6P01/rels/m676Dll/symbols.txt
+  splits: config/GP6P01/rels/m676Dll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m677DLL.rel
+  hash: 559ca1136076ea2f9e988c678e3ef1ff98212ec5
+  symbols: config/GP6P01/rels/m677DLL/symbols.txt
+  splits: config/GP6P01/rels/m677DLL/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m678Dll.rel
+  hash: 3adbfe4cc5fb659f86db930fea1469a55f66d872
+  symbols: config/GP6P01/rels/m678Dll/symbols.txt
+  splits: config/GP6P01/rels/m678Dll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m679dll.rel
+  hash: bfa75f43557183f4da2721b60e6221e8282cc0c5
+  symbols: config/GP6P01/rels/m679dll/symbols.txt
+  splits: config/GP6P01/rels/m679dll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m680Dll.rel
+  hash: c758ac3394fae062df195a285dca75a4cf1497a3
+  symbols: config/GP6P01/rels/m680Dll/symbols.txt
+  splits: config/GP6P01/rels/m680Dll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m681DLL.rel
+  hash: 0c321b89fa788158f17df47d1dffff625f580909
+  symbols: config/GP6P01/rels/m681DLL/symbols.txt
+  splits: config/GP6P01/rels/m681DLL/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/m699Dll.rel
+  hash: e8718f7285b7c5afd38dbbe590b126b42482138f
+  symbols: config/GP6P01/rels/m699Dll/symbols.txt
+  splits: config/GP6P01/rels/m699Dll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/mdbankdll.rel
+  hash: 77da4b5168ffb31a97e778330e85250901083528
+  symbols: config/GP6P01/rels/mdbankdll/symbols.txt
+  splits: config/GP6P01/rels/mdbankdll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/mdmicdll.rel
+  hash: 07c4caa702194577b35d5c077c2458c48449bd7c
+  symbols: config/GP6P01/rels/mdmicdll/symbols.txt
+  splits: config/GP6P01/rels/mdmicdll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/mdminidll.rel
+  hash: d998538c7e3b6e601193c68b7788fcb3098b152b
+  symbols: config/GP6P01/rels/mdminidll/symbols.txt
+  splits: config/GP6P01/rels/mdminidll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/mdpartydll.rel
+  hash: 26b3f21d86fc52d041f43a46b745642589cca48d
+  symbols: config/GP6P01/rels/mdpartydll/symbols.txt
+  splits: config/GP6P01/rels/mdpartydll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/mdpresultdll.rel
+  hash: 3ade05e03c131dde0f94d3107bce3cfbbc417a2e
+  symbols: config/GP6P01/rels/mdpresultdll/symbols.txt
+  splits: config/GP6P01/rels/mdpresultdll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/mdseldll.rel
+  hash: 2de016ca092e240e04fd25e8d6439d4175a8fdac
+  symbols: config/GP6P01/rels/mdseldll/symbols.txt
+  splits: config/GP6P01/rels/mdseldll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/mdsingdll.rel
+  hash: 681e8a8dd6d4ef59d23b9b4d0402368559359db5
+  symbols: config/GP6P01/rels/mdsingdll/symbols.txt
+  splits: config/GP6P01/rels/mdsingdll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/meschkdll.rel
+  hash: f0c2e23ea31cddc7ead0e532c93c09a61d84301a
+  symbols: config/GP6P01/rels/meschkdll/symbols.txt
+  splits: config/GP6P01/rels/meschkdll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/mgmbattledll.rel
+  hash: e1dd37eba36c6e753ce1d8a40dcc3fb3a9037548
+  symbols: config/GP6P01/rels/mgmbattledll/symbols.txt
+  splits: config/GP6P01/rels/mgmbattledll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/mgmbingodll.rel
+  hash: b922c5e4cce98c518083d6b5230d9ed13541bdac
+  symbols: config/GP6P01/rels/mgmbingodll/symbols.txt
+  splits: config/GP6P01/rels/mgmbingodll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/mgmdecathlondll.rel
+  hash: c3c959a949604e7a6260fea6a323e9788b8dbc74
+  symbols: config/GP6P01/rels/mgmdecathlondll/symbols.txt
+  splits: config/GP6P01/rels/mgmdecathlondll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/mgmfreedll.rel
+  hash: a9023893a54f846458f680d753a87f0eb50ed325
+  symbols: config/GP6P01/rels/mgmfreedll/symbols.txt
+  splits: config/GP6P01/rels/mgmfreedll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/mgmrenshodll.rel
+  hash: 6fa2d53cce0ef528aa033504cf791fa03a8b7820
+  symbols: config/GP6P01/rels/mgmrenshodll/symbols.txt
+  splits: config/GP6P01/rels/mgmrenshodll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/mgmtournamentdll.rel
+  hash: 2e821845c9058676e715af74d0064e02aaa596c7
+  symbols: config/GP6P01/rels/mgmtournamentdll/symbols.txt
+  splits: config/GP6P01/rels/mgmtournamentdll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/micquizdll.rel
+  hash: b4612741c66074256c02c76b58950db1dc0df396
+  symbols: config/GP6P01/rels/micquizdll/symbols.txt
+  splits: config/GP6P01/rels/micquizdll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/micquizishidll.rel
+  hash: 707d8d54814353b9d4fdc3ff5dc106e9c83eadc3
+  symbols: config/GP6P01/rels/micquizishidll/symbols.txt
+  splits: config/GP6P01/rels/micquizishidll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/micquizmyokodll.rel
+  hash: 91369ff19e0aa14a336f19c86ac4417fe9dc976c
+  symbols: config/GP6P01/rels/micquizmyokodll/symbols.txt
+  splits: config/GP6P01/rels/micquizmyokodll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/micquizohdedll.rel
+  hash: f4007a29a9df9a2861e2aa1cb59aabc595777f18
+  symbols: config/GP6P01/rels/micquizohdedll/symbols.txt
+  splits: config/GP6P01/rels/micquizohdedll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/micquizseldll.rel
+  hash: 3b2e50e8e933dfd115a25706359eb674067d37e9
+  symbols: config/GP6P01/rels/micquizseldll/symbols.txt
+  splits: config/GP6P01/rels/micquizseldll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/mikeactdll.rel
+  hash: 86f6c9f372a77f514a52e4559c2013f3de47ab31
+  symbols: config/GP6P01/rels/mikeactdll/symbols.txt
+  splits: config/GP6P01/rels/mikeactdll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/miraclebookdll.rel
+  hash: af3f103d48427782844ff1a18ae8436d5f6f978f
+  symbols: config/GP6P01/rels/miraclebookdll/symbols.txt
+  splits: config/GP6P01/rels/miraclebookdll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/motchkDll.rel
+  hash: 4a07bf9458f16c3724824ce2e80d4f011a8b8f85
+  symbols: config/GP6P01/rels/motchkDll/symbols.txt
+  splits: config/GP6P01/rels/motchkDll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/openingDll.rel
+  hash: 2d14a0b9aca605aa3898d86f692790d97ecba728
+  symbols: config/GP6P01/rels/openingDll/symbols.txt
+  splits: config/GP6P01/rels/openingDll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/optionDll.rel
+  hash: 9017a8ecc0b58bef4f052621e537ac7a14c7ab07
+  symbols: config/GP6P01/rels/optionDll/symbols.txt
+  splits: config/GP6P01/rels/optionDll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/partyresultdll.rel
+  hash: 74ff7f2cba294af640e874b4ba18ea113608b36d
+  symbols: config/GP6P01/rels/partyresultdll/symbols.txt
+  splits: config/GP6P01/rels/partyresultdll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/resultDll.rel
+  hash: ca69a69c11c9becfe11690f845790d774f8af3c9
+  symbols: config/GP6P01/rels/resultDll/symbols.txt
+  splits: config/GP6P01/rels/resultDll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/s01Dll.rel
+  hash: 457d11a4adcad2964e4386533e4b1b46b8d54a88
+  symbols: config/GP6P01/rels/s01Dll/symbols.txt
+  splits: config/GP6P01/rels/s01Dll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/s02Dll.rel
+  hash: 8bc7a0a083f49847644a3a52a708aae312511a85
+  symbols: config/GP6P01/rels/s02Dll/symbols.txt
+  splits: config/GP6P01/rels/s02Dll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/s03Dll.rel
+  hash: 7b7158fb17aac1c4fc7e6e13229fd53ab0e03b03
+  symbols: config/GP6P01/rels/s03Dll/symbols.txt
+  splits: config/GP6P01/rels/s03Dll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/safdll.rel
+  hash: f1d5bef0df4c4568ca4edb9debc239fad1d17b55
+  symbols: config/GP6P01/rels/safdll/symbols.txt
+  splits: config/GP6P01/rels/safdll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/selmenuDll.rel
+  hash: 074edae5abaa88fedf632910db87c4c45a0ba4a9
+  symbols: config/GP6P01/rels/selmenuDll/symbols.txt
+  splits: config/GP6P01/rels/selmenuDll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/sequencedll.rel
+  hash: e8152fc9de15e9548623031c5434c5d003177fc9
+  symbols: config/GP6P01/rels/sequencedll/symbols.txt
+  splits: config/GP6P01/rels/sequencedll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/staffdll.rel
+  hash: 4474f306b08922514e1a1d3767ab3c4007ddf215
+  symbols: config/GP6P01/rels/staffdll/symbols.txt
+  splits: config/GP6P01/rels/staffdll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/storyresultdll.rel
+  hash: 74ff7f2cba294af640e874b4ba18ea113608b36d
+  symbols: config/GP6P01/rels/storyresultdll/symbols.txt
+  splits: config/GP6P01/rels/storyresultdll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/ttwarsdll.rel
+  hash: 8aec0112df8a04f53cf817ec5109798d48c5e138
+  symbols: config/GP6P01/rels/ttwarsdll/symbols.txt
+  splits: config/GP6P01/rels/ttwarsdll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/w01Dll.rel
+  hash: 06ba25c9893f581f24d240503287f0b8f5161c12
+  symbols: config/GP6P01/rels/w01Dll/symbols.txt
+  splits: config/GP6P01/rels/w01Dll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/w02Dll.rel
+  hash: c5f54ba0096a43deddb6de9c66a4402fb5c6edca
+  symbols: config/GP6P01/rels/w02Dll/symbols.txt
+  splits: config/GP6P01/rels/w02Dll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/w03Dll.rel
+  hash: d4b5a4ff7bda5015d58e30793efba170cfc7dae1
+  symbols: config/GP6P01/rels/w03Dll/symbols.txt
+  splits: config/GP6P01/rels/w03Dll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/w04Dll.rel
+  hash: 77cd33cd8bdb970e9a97f2744b114020363751bf
+  symbols: config/GP6P01/rels/w04Dll/symbols.txt
+  splits: config/GP6P01/rels/w04Dll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/w05Dll.rel
+  hash: 2350dca67cca359e3fdd77849124e7110e51550f
+  symbols: config/GP6P01/rels/w05Dll/symbols.txt
+  splits: config/GP6P01/rels/w05Dll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/w06Dll.rel
+  hash: 0ad35a9eae3fa8f1bc1922e70e46d9b9da6584a5
+  symbols: config/GP6P01/rels/w06Dll/symbols.txt
+  splits: config/GP6P01/rels/w06Dll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/w10Dll.rel
+  hash: 214c61d4973b7c47ea44df30df591b3627f732da
+  symbols: config/GP6P01/rels/w10Dll/symbols.txt
+  splits: config/GP6P01/rels/w10Dll/splits.txt
+  links: []
+
+- object: orig/GP6P01/files/dll/w11Dll.rel
+  hash: 2751c3eeab6062d4c372f90e00a5817b72fb8a6d
+  symbols: config/GP6P01/rels/w11Dll/symbols.txt
+  splits: config/GP6P01/rels/w11Dll/splits.txt
+  links: []

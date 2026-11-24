@@ -1,0 +1,12 @@
+# Minigames that never appear in a party-mode game (see apply_minigame_exclusion_patch.py).
+# One per line:
+#   m604      every table entry that uses the m604 overlay (4P, Battle and Duel copies)
+#   m604:3    only the entries of that type (0 4P, 1 1v3, 2 2v2, 3 Battle, 6 Duel)
+# Blank lines and '#' comments are ignored. An empty list restores vanilla behaviour.
+# Minigame Mode and Free Play still list excluded games.
+
+m608:0   # Snow Whirled (4P)
+m638:2   # Gondola Glide (2v2)
+m647:3   # Insectiride (Battle)
+m651:6   # Black Hole Boogie (Duel)
+m661:6   # Boonanza (Duel)

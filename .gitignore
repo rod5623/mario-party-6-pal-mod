@@ -1,0 +1,29 @@
+# Game files: users supply their own
+root/*
+!root/README.md
+!root/.gitkeep
+
+# Board file backups written by the patch scripts
+backups/*
+!backups/.gitkeep
+
+# Local working copies
+build-snapshot-*/
+root-backup/
+
+# Disc images
+*.iso
+*.gcm
+*.rvz
+*.ciso
+
+# Editors and OS
+.vscode/
+.idea/
+Thumbs.db
+desktop.ini
+
+# Test and lint caches
+.pytest_cache/
+.ruff_cache/
+.coverage
