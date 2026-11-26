@@ -5,7 +5,7 @@ import pytest
 
 from tests.builders import SELF_MODULE, make_rel
 from tools.lib.rel import (
-    R_DOLPHIN_END, R_PPC_REL24, add_calls, check_words, import_blocks, retarget_call, text_base, walk_relocs,
+    R_DOLPHIN_END, R_DOLPHIN_NOP, R_PPC_REL24, add_calls, check_words, import_blocks, retarget_call, text_base, walk_relocs,
 )
 
 R_PPC_ADDR16_HA = 6
@@ -68,6 +68,16 @@ def test_add_calls_two_sites_sorted():
     # deltas: the first record counts from the R_DOLPHIN_SECTION reset, the second from the first
     deltas = [struct.unpack_from(">H", rel, len(rel) - 8 * n)[0] for n in (3, 2)]
     assert deltas == [0x0C, 0x30 - 0x0C]
+
+
+def test_add_calls_long_gap_uses_nop_records():
+    # the delta field is 16 bits: a site more than 0xFFFF bytes after the previous one needs NOPs
+    rel = make_rel(bytes(0x20010), relocs=[(0x08, R_PPC_REL24, 0, 0x8017E03C)])
+    assert add_calls(rel, [(0x1FFF0, 0x80004000), (0x8, 0x8017E03C)]) == 1
+    assert module0(rel)[-1] == (1, 0x1FFF0, R_PPC_REL24, 0x80004000)
+    kinds = [k for _, _, _, k, _, _ in walk_relocs(rel, import_blocks(rel)[0])]
+    assert kinds.count(R_DOLPHIN_NOP) == 1
+    assert add_calls(rel, [(0x1FFF0, 0x80004000)]) == 0
 
 
 def test_add_calls_skips_only_the_existing_site():

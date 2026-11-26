@@ -7,4 +7,5 @@
 
 Pillow      # images: thumbnails, card art, icons, instruction pictures, models' textures
 requests    # only for tools/upload_progress.py (decomp progress reporting); the patches don't need it
+capstone    # only for tools/scripts/mp7_rel_dis.py (disassembling Mario Party 7 RELs); tested with 5.0.7
 gclib @ git+https://github.com/LagoLunatic/gclib.git@dff7278b54d4b7c94ddb4dfbe3251203f098b3cb  # ISO rebuild: tools/scripts/build_iso.py (also pulls numpy, imagequant)

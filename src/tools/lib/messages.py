@@ -3,7 +3,8 @@
 messdata*.bin is a u32 bank count, then one u32 offset per bank (relative to byte 4), then the
 banks. A patch that owns a single bank builds its bank from the pristine file and calls
 write_bank() to put just that bank into the current output, so patches that own different banks
-don't overwrite each other. Patches that share a bank append with edit_bank().
+don't overwrite each other. Patches that share a bank append with edit_bank(). A patch that adds a
+whole bank after the vanilla ones uses set_bank(); splice_bank() leaves such extra banks alone.
 """
 import struct
 
@@ -39,10 +40,13 @@ def _bounds(data, bank):
 
 
 def splice_bank(target, donor, bank):
-    """Return a copy of target whose bank `bank` is taken from donor."""
+    """Return a copy of target whose bank `bank` is taken from donor.
+
+    The target may have more banks than the donor (banks appended after the vanilla ones by set_bank),
+    never fewer."""
     target = bytearray(target)
     count = struct.unpack_from(">I", target, 0)[0]
-    if struct.unpack_from(">I", donor, 0)[0] != count:
+    if struct.unpack_from(">I", donor, 0)[0] > count:
         raise RuntimeError("Message files have different bank counts")
     _, t_start, t_end = _bounds(target, bank)
     _, d_start, d_end = _bounds(donor, bank)
@@ -146,3 +150,43 @@ def edit_bank(source, replacements, label, bank, bank_records, append=(), known_
         pos = 4 + 4 * index
         struct.pack_into(">I", data, pos, struct.unpack_from(">I", data, pos)[0] + delta)
     return data
+
+
+def build_bank(records):
+    """One bank: u32 record count, the record offsets (relative to the bank start + 4), the records."""
+    position = 4 + 4 * len(records)
+    offsets = []
+    for rec in records:
+        offsets.append(position - 4)
+        position += len(rec)
+    return struct.pack(">I", len(records)) + struct.pack(f">{len(records)}I", *offsets) + b"".join(records)
+
+
+def bank_records(data, bank):
+    """The records of `bank`, as bytes (each with its padding)."""
+    _, start, end = _bounds(data, bank)
+    count = struct.unpack_from(">I", data, start)[0]
+    offsets = struct.unpack_from(f">{count}I", data, start + 4)
+    bounds = [start + 4 + offset for offset in offsets] + [end]
+    return [bytes(data[bounds[i]:bounds[i + 1]]) for i in range(count)]
+
+
+def set_bank(source, bank, records, label, known=()):
+    """Return source with `bank` = `records`, a bank added after the existing ones.
+
+    The file must have exactly `bank` banks (the bank is appended) or `bank` + 1 whose last bank is
+    `records` or one of the record lists in `known` (an older version of this patch's bank, rebuilt)."""
+    records = list(records)
+    count = struct.unpack_from(">I", source, 0)[0]
+    if count == bank + 1:
+        if bank_records(source, bank) not in (records, *map(list, known)):
+            raise RuntimeError(f"{label}: bank {bank:#x} already holds different records")
+    elif count != bank:
+        raise RuntimeError(f"{label}: {count} message banks, expected {bank} or {bank + 1}")
+    banks = [bytes(source[start:end]) for start, end in (_bounds(source, i)[1:] for i in range(bank))]
+    banks.append(build_bank(records))
+    offsets, position = [], 4 * len(banks)
+    for blob in banks:
+        offsets.append(position)
+        position += len(blob)
+    return bytearray(struct.pack(f">I{len(banks)}I", len(banks), *offsets) + b"".join(banks))

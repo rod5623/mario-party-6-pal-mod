@@ -169,6 +169,28 @@ def test_append_tracks(tmp_path):
         assert data[coef_off + 0x40 * index:coef_off + 0x40 * index + 0x20] == COEF_BYTES
 
 
+
+def test_read_track_round_trip(tmp_path):
+    first = pdt.track_from_dsp(make_dsp(28, payload=b"a" * 16), make_dsp(28, payload=b"b" * 16))
+    second = pdt.track_from_dsp(make_dsp(14, loop=True, payload=b"c" * 8), make_dsp(14, loop=True, payload=b"d" * 8))
+    empty = tmp_path / "empty.pdt"
+    header = bytearray(0x20)
+    struct.pack_into(pdt.HEADER, header, 0, 1, 0, 4, 32000, 2, 0x20, 0x20, 0x20, 0x20)
+    empty.write_bytes(header)
+    two = tmp_path / "two.pdt"
+    pdt.append_tracks(empty, two, [first, second])
+    blob = two.read_bytes()
+    for index, track in enumerate((first, second)):
+        read = pdt.read_track(blob, index)
+        assert (read.flags, read.volume, read.pan, read.rate, read.nibbles, read.loop_start) ==             (track.flags, track.volume, track.pan, track.rate, track.nibbles, track.loop_start)
+        assert (read.left, read.right, read.coefs) == (track.left, track.right, track.coefs)
+    # a track read from one archive appends to another unchanged (how MP7 music is ported)
+    copy = tmp_path / "copy.pdt"
+    pdt.append_tracks(empty, copy, [pdt.read_track(blob, 1)])
+    assert pdt.read_track(copy.read_bytes(), 0).left == second.left
+    with pytest.raises(IndexError):
+        pdt.read_track(blob, 2)
+
 # --- scale_msm_volume ------------------------------------------------------------------------
 
 def adpcm_frames(seed, frames=10):

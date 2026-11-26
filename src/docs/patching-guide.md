@@ -36,7 +36,9 @@ neighbours.**
    and music is addressed by track number. So data for an existing directory still goes into
    existing archives, tracks are appended to `sound/MP6_Str.pdt`, and placeholders such as
    `movie/dummy` and `dll/jbtestdll.rel` stay the simplest route. A whole new file (a new board's
-   REL and archive) also needs the DOL table that names it extended.
+   REL and archive) also needs the DOL table that names it extended: `pagoda_board` moves the data
+   dir table into section 19 and appends `data/w07.bin` as dir 261. The game panics at start-up if a
+   listed dir is missing, so that DOL needs `w07.bin` on the disc.
 5. **Don't re-run one early step on its own.** Several patches rebuild a shared file from its
    current state and drop anything appended after their own part. Example: `wheel_of_fortune`
    truncates `data/board*.bin` back to its own icon, which deleted the Castaway wheel icons
@@ -108,7 +110,8 @@ cw`) only for what that patch *made*: its cave addresses, appended records, sect
 | `text_base`, `walk_relocs`, `import_blocks`, `add_calls`, `retarget_call`, `check_words`, `R_PPC_REL24` | `tools.lib.rel` | REL relocation tools (section 5). |
 | `OLD_BASE`, `NEW_BASE`, `NEW_END`, `ENTRY_SIZE`, `SECTION_SLOT`, `MG_TYPE_BATTLE`, `emit_type_check` | `tools.lib.minigames` | MgDataTbl layout. `emit_type_check` branches unless `MgDataTbl[GwSystem.mgNo].type` equals a value. |
 | `add_table_entry(dol, src_index, new_index, mg_type)` and the Battle-port recipe | `tools.lib.battle_port` | Copy a minigame table entry with a new type; hook a ported REL. |
-| `write_bank`, `splice_bank` | `tools.lib.messages` | Replace one message bank (section 6). |
+| `write_bank`, `splice_bank` | `tools.lib.messages` | Replace one message bank (section 6). Banks appended after the donor's are kept. |
+| `set_bank(source, bank, records, label, known)`, `build_bank`, `bank_records` | `tools.lib.messages` | Add a whole bank after the existing ones (idempotent), build one, read one. |
 | `edit_bank(source, replacements, label, bank, bank_records, append, known_tails)` | `tools.lib.messages` | Replace and append records in one bank, accepting older versions' tails. |
 | `append_records(source, {bank: (orig_count, records)}, label)` | `tools.lib.messages` | Simpler append. |
 | `encode(text)`, `record(header, body, end)`, `INDENT` | `tools.lib.messages` | Message text encoding. |
@@ -161,13 +164,17 @@ fills 0–1 and 7–14. The mod adds:
 | data 15 | `0x802F49A0`–`0x802F7DA0` (`0x3400`) | `mgtable_move` | Relocated MgDataTbl, then caves in its tail |
 | data 16 | `0x802F7DA0`–`0x802F8DA0` (`0x1000`) | `castaway_spare_change` | Board event code, **full** |
 | data 17 | `0x802F8DA0`–`0x802F9DA0` (`0x1000`) | `egadd_morpher` | Board event code, Unlucky Star |
+| text 2 ("section 18") | `0x802F9DA0`–`0x802FA1A0` (`0x400`) | `clone_board`, `pagoda_peak` | Board-alias stubs and the `w07dll.rel` path (to `0x802F9EA8`); board 11's moved tables (`0x802F9EC0`–`0x802FA060`); free from `0x802FA060` |
+| text 3 ("section 19") | `0x802FA1A0`–`0x802FB1A0` (`0x1000`) | `pagoda_board` | The `data/w07.bin` path; the moved data dir table (262 entries + terminator, `0x802FA1C0`–`0x802FA9F8`); the moved orb list table (`0x802FAA00`–`0x802FAA68`); the results label stub (`0x802FAA80`–`0x802FAAA0`); the Cannon orb's hook words (`0x802FAAA0`, `0x802FAAA4`, set by the board REL) and exec/kill stubs (`0x802FAAC0`, `0x802FAAE0`–`0x802FAAF8`) and CPU hook word (`0x802FAAA8`); the moved CPU orb table (`0x802FAB00`–`0x802FAF50`, 24 rows) and the Cannon's CPU stub (`0x802FAF60`–`0x802FAF88`); free from `0x802FAFA0` |
 
 New sections start at the old `__ArenaLo` (`0x802F49A0`), so the heap must start after them.
 `mgtable_move` hooks `OSSetArenaLo` (`0x800994B0`) to a clamp cave at `0x80004D18`
 (`lis r0,hi; ori r0,r0,lo; cmplw; bge; mr; stw; blr`). Each script that adds a section raises
-the `lis`/`ori` pair to its own end, and only ever raises it. A new section 18 must start at
-`0x802F9DA0`, sit in an unused slot, and raise the clamp the same way. Copy `add_section()`
-from `apply_castaway_spare_change_patch.py`.
+the `lis`/`ori` pair to its own end, and only ever raises it. A new section must start at
+`0x802F9DA0` and raise the clamp the same way. All 11 data slots are now used (15–17 above), but
+text slots 2–6 are free and load the same way: `clone_board` put section 18 in text slot 2 and
+`pagoda_board` section 19 in text slot 3, so the next one starts at `0x802FB1A0` in text slot 4.
+Copy `add_section()` from `apply_pagoda_board_patch.py`.
 
 **Init area (text section 0, `0x80003100`–`0x800056C0`, TRK exception vectors).** Each
 0x100-byte vector has zero padding, typically `0x8000xx18`–`0x8000xxE4`. A script's declared
@@ -311,6 +318,8 @@ A message id in code is `(bank << 16) | record`. For example, `MSG_BASE = 0x3300
   of your records, plus every combination with the records that later patches append after
   yours. That lets a re-run strip and rebuild them. Each appender sets `BANK_RECORDS` to the
   previous patch's `BANK_RECORDS + len(RECORDS)`, so the record numbers are fixed.
+- **Add a new bank:** `set_bank(source, bank, records, label)` appends it after the vanilla 75
+  (0x00–0x4A); a re-run replaces it. `pagoda_board` owns bank 0x4B, so the next new bank is 0x4C.
 
 **Bank owners (collected from the scripts):**
 
@@ -324,14 +333,20 @@ A message id in code is `(bank << 16) | record`. For example, `MSG_BASE = 0x3300
 | 0x31 (49) | star_shuffle_bet | Base 75 records; also replaces records for double_or_nothing |
 | 0x33 (51) | castaway_wheel (51–58), castaway_broom, castaway_spare_change (60–68), castaway_troll (69–72) | Chained in that order |
 | 0x36 (54) | star_trap_orb | Event messages (records 21, 22); orb name and description in banks 56 and 55 |
+| 0x2C | pagoda_peak | Appends record 19 (board 11's welcome text) |
 | 0x3B | boo_day_orbs | Appends records 18–24 |
 | 0x3E | dk_bonus | |
 | 0x3F | bowser_bonus, bowser_bonus_fix, bowser_minigame | bowser_minigame appends after the other two |
+| 0x4B (75) | pagoda_board | New bank after the vanilla ones: Pagoda Peak's text (MP7 bank 0x14, 57 records) |
 | 65 | closecall | Instructions (records 479–481) |
 
 ---
 
 ## 7. Data archives and board files
+
+Adding a board rather than editing one: follow [adding-a-board.md](adding-a-board.md).
+[board-tables.md](board-tables.md) maps every table and code site that hard-codes the board set
+(`python -m tools.scripts.board_tables_dump`).
 
 **Archives** (`data/*.bin`, via `mpdata.py`):
 - Layout: `u32 count`, `u32 offset[count]`, then per file `u32 decoded_size`, `u32 decode_type`

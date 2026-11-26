@@ -2,6 +2,7 @@
 import struct
 
 from tools.lib import mpdata
+from tools.lib.mpdata import lz_decode  # noqa: F401 (other modules import it from here)
 
 
 def flag_offset(blob, space_id):
@@ -12,32 +13,6 @@ def flag_offset(blob, space_id):
             return pos + 38
         pos += 46 + 2 * links
     raise ValueError(space_id)
-
-
-def lz_decode(src, size):
-    buf = bytearray(1024)
-    pos, flag, i, out = 958, 0, 0, bytearray()
-    while len(out) < size:
-        flag >>= 1
-        if not flag & 0x100:
-            flag = src[i] | 0xFF00
-            i += 1
-        if flag & 1:
-            b = src[i]
-            i += 1
-            buf[pos] = b
-            pos = (pos + 1) & 0x3FF
-            out.append(b)
-        else:
-            a, c = src[i], src[i + 1]
-            i += 2
-            a |= (c & ~0x3F) << 2
-            for j in range((c & 0x3F) + 3):
-                b = buf[(a + j) & 0x3FF]
-                buf[pos] = b
-                pos = (pos + 1) & 0x3FF
-                out.append(b)
-    return bytes(out[:size])
 
 
 def kind_offset(blob, space_id):
@@ -53,7 +28,7 @@ def kind_offset(blob, space_id):
 def load_spaces(data, offsets):
     start, end = mpdata.file_bounds(data, offsets, 0)
     size, kind = struct.unpack_from(">II", data, start)
-    blob = lz_decode(data[start + 8:end], size) if kind == 1 else mpdata.read_file(data, offsets, 0)
+    blob = mpdata.read_file(data, offsets, 0)
     return bytearray(blob), start, end
 
 

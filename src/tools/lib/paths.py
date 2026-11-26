@@ -9,6 +9,8 @@ ORIG = ROOT / "orig" / "GP6P01"
 DOL = BUILD / "main.dol"
 BASE_ISO = ORIG.parent / "GP6P01.iso"   # the user's clean disc image (git-ignored)
 MOD_ISO = BUILD.parent / "GP6P01-mod.iso"
+MP7_ISO = ORIG.parent / "GP7P01.iso"    # the user's Mario Party 7 PAL disc (git-ignored), for ported content
+MP7_ORIG = ORIG.parent / "GP7P01"       # its Dolphin extract (sys/, files/), used instead of the ISO if present
 
 ASM_TEXT = BUILD / "asm" / "auto_03_800EF6C8_text.s"
 ASM_DATA = BUILD / "asm" / "auto_07_80259D80_data.s"

@@ -11,6 +11,7 @@ Paths are relative to `src/`.
 | New win sound | `sfx` | `sound/MP6_SND.msm`, bank 000E | Sample `0x0280` replaced |
 | Quieter sound effects | `sfx` | `sound/MP6_SND.msm`, all other banks | Every sample re-encoded at gain 0.80 (about −2 dB) so the voices stand out. Lengths and loop points unchanged. |
 | Quieter music | `music_volume` | `main.dol` | Stream master volume 127 → 100 (about −2 dB). Affects all streamed music, not sound effects. |
+| Pagoda Peak music | `pagoda_peak` | `sound/MP6_Str.pdt` | Track 111: Mario Party 7's track 12 copied unchanged from `MP7_Str.pdt` (same format) with `pdt.read_track` |
 | Close Call music | `closecall` | `sound/MP6_Str.pdt` | New track 110 appended from `tools/assets/closecall_music.wav` (32000 Hz, 16-bit stereo), at volume 127 with ×1.07 gain and a soft limiter |
 
 Play in English: some patches change only English text, but every audio change applies to all

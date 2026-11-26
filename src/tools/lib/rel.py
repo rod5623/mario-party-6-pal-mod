@@ -73,7 +73,11 @@ def add_calls(rel, sites):
     for offset, target in pending:
         position = text_base(rel) + offset
         rel[position:position + 4] = struct.pack(">I", 0x48000001)
-        records += struct.pack(">HBBI", offset - previous, R_PPC_REL24, 4, target)
+        gap = offset - previous
+        while gap > 0xFFFF:  # the delta field is 16 bits: step over long gaps with NOP records
+            records += struct.pack(">HBBI", 0xFFFF, R_DOLPHIN_NOP, 0, 0)
+            gap -= 0xFFFF
+        records += struct.pack(">HBBI", gap, R_PPC_REL24, 4, target)
         previous = offset
     rel[end:end] = records
     return len(pending)
@@ -95,6 +99,8 @@ def check_words(rel, text_offset, *expected):
         raise RuntimeError(f"Unexpected word at {text_offset:#x}: {actual.hex()} (expected {expected})")
 
 R_PPC_REL24 = 10
+
+R_DOLPHIN_NOP = 201
 
 R_DOLPHIN_SECTION = 202
 

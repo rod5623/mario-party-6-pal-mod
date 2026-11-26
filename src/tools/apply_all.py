@@ -44,6 +44,7 @@ STEPS = [
     "bowser_bonus_fix",
     "random_bonus",  # runs ninja, so it precedes the DOL-only patches below
     "minigame_wins",  # rebuilds resultDll (ninja); writes files/dll/resultDll.rel, so before mgtable_move
+    "party_pages",  # board select pages: rebuilds mdpartydll (ninja, so before mgtable_move); clone_board installs it, pagoda_board adds the page-2 files
     # B. message writers that chain
     "bowser_minigame",
     "final_five_odds",
@@ -89,6 +90,9 @@ STEPS = [
     "egadd_robots",  # two robot cards + the spare change event (nodes 114/115): chains the wheel's pass/init hooks, DOL section 17 after egadd_morpher, bank 0x30 records 34-42, w02 file 58 and spaces (root/data)
     "egadd_miracle_space",  # E. Gadd's Garage space 27 (turntable, below the hub) blue -> Miracle; writes root/data/w02*.bin only
     "unlucky",  # Unlucky Star counter: DOL section 17 after egadd_robots; hooks the coin/Star setters (reset + award in random_bonus)
+    "clone_board",  # board 11 = a copy of Snowflake Lake (w07dll.rel in overlay slot 0x70): DOL section 18 (text slot 2) follows section 17; hooks mdpresultdll after random_bonus rebuilt it; owns mdpartydll.rel
+    "pagoda_peak",  # board 11 gets MP7 Pagoda Peak's music (track 111, after closecall's 110), logo (board*.bin file 189, after castaway_wheel) and welcome text; moves 4 tables into section 18 after clone_board's code
+    "pagoda_board",  # board 11's own archive w07.bin (data dir 261): the data dir table moves into DOL section 19 (text slot 3), which follows section 18, so after pagoda_peak; also replaces clone_board's w07dll.rel with the C board REL (no ninja)
 ]
 TEST_AIDS = ["battle_always", "duel_test_aid", "closecall_always"]  # appended last when requested
 
