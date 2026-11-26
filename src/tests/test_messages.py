@@ -2,7 +2,8 @@
 import pytest
 
 from tests.builders import make_messdata, read_bank, read_banks
-from tools.lib.messages import append_records, edit_bank, encode, record, splice_bank, write_bank
+from tools.lib.messages import (append_records, bank_records, edit_bank, encode, record, set_bank, splice_bank,
+                                 write_bank)
 
 
 def rec(text):
@@ -55,7 +56,7 @@ def test_splice_bank():
 
 def test_splice_bank_bank_count_mismatch():
     with pytest.raises(RuntimeError):
-        splice_bank(vanilla(), make_messdata(BANKS[:2]), 1)
+        splice_bank(make_messdata(BANKS[:2]), vanilla(), 1)
 
 
 def test_write_bank_uses_output_if_present(tmp_path):
@@ -138,3 +139,36 @@ def test_append_records():
 def test_bank_out_of_range():
     with pytest.raises(RuntimeError):
         splice_bank(vanilla(), vanilla(), 3)
+
+
+NEW = [rec("new a"), rec("new b")]
+
+
+def test_set_bank_appends_and_is_idempotent():
+    once = set_bank(vanilla(), 3, NEW, "test")
+    assert read_banks(once) == BANKS + [NEW]
+    assert set_bank(once, 3, NEW, "test") == once
+
+
+def test_set_bank_rebuilds_a_known_older_version():
+    old = set_bank(vanilla(), 3, [rec("old")], "test")
+    assert read_banks(set_bank(old, 3, NEW, "test", known=[[rec("old")]])) == BANKS + [NEW]
+    with pytest.raises(RuntimeError, match="different"):
+        set_bank(old, 3, NEW, "test")
+
+
+def test_set_bank_rejects_another_bank_count():
+    with pytest.raises(RuntimeError, match="banks"):
+        set_bank(vanilla(), 4, NEW, "test")
+
+
+def test_bank_records():
+    assert bank_records(vanilla(), 1) == BANKS[1]
+
+
+def test_splice_bank_keeps_appended_banks():
+    target = set_bank(vanilla(), 3, NEW, "test")
+    donor = make_messdata([BANKS[0], [rec("spliced")], BANKS[2]])
+    assert read_banks(splice_bank(target, donor, 1)) == [BANKS[0], [rec("spliced")], BANKS[2], NEW]
+    with pytest.raises(RuntimeError):
+        splice_bank(vanilla(), bytes(target), 1)    # the donor may not have more banks than the target

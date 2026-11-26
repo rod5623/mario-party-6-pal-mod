@@ -1,7 +1,8 @@
 """Reading and writing Mario Party 6 data archives (data/*.bin) and their sprite (ANM) files.
 
 Archive: u32 count, u32 offsets[count]; each file at its offset is
-  u32 decoded size, u32 decode type (7 = zlib), then for zlib u32 decoded size, u32 compressed size, data.
+  u32 decoded size, u32 decode type (1 = LZ, 7 = zlib), then the data; zlib data starts with
+  u32 decoded size, u32 compressed size.
 Sprite files (see include/game/animdata.h): ANIMDATA header, banks, patterns, layers and
 bitmaps; image data is usually GameCube CMPR (DXT1-like, 8x8 tiles of four 4x4 blocks).
 """
@@ -9,7 +10,35 @@ import struct
 import zlib
 
 TYPE_NONE = 0
+TYPE_LZ = 1
 TYPE_ZLIB = 7
+
+
+def lz_decode(src, size):
+    """HuDecodeLz (decode.c): LZSS with a 1 KB window starting at 958."""
+    buf = bytearray(1024)
+    pos, flag, i, out = 958, 0, 0, bytearray()
+    while len(out) < size:
+        flag >>= 1
+        if not flag & 0x100:
+            flag = src[i] | 0xFF00
+            i += 1
+        if flag & 1:
+            b = src[i]
+            i += 1
+            buf[pos] = b
+            pos = (pos + 1) & 0x3FF
+            out.append(b)
+        else:
+            a, c = src[i], src[i + 1]
+            i += 2
+            a |= (c & ~0x3F) << 2
+            for j in range((c & 0x3F) + 3):
+                b = buf[(a + j) & 0x3FF]
+                buf[pos] = b
+                pos = (pos + 1) & 0x3FF
+                out.append(b)
+    return bytes(out[:size])
 
 
 def read_archive(path):
@@ -29,6 +58,8 @@ def read_file(data, offsets, index):
     size, kind = struct.unpack_from(">II", data, start)
     if kind == TYPE_NONE:
         return data[start + 8:start + 8 + size]
+    if kind == TYPE_LZ:
+        return lz_decode(data[start + 8:end], size)
     if kind == TYPE_ZLIB:
         compressed = struct.unpack_from(">I", data, start + 12)[0]
         return zlib.decompress(data[start + 16:start + 16 + compressed])
@@ -39,6 +70,18 @@ def pack_file(payload):
     compressed = zlib.compress(payload, 9)
     blob = struct.pack(">IIII", len(payload), TYPE_ZLIB, len(payload), len(compressed)) + compressed
     return blob + b"\0" * (-len(blob) % 4)
+
+
+def keep_files(data, offsets, count):
+    """Return the archive cut back to its first `count` files (drops files appended after them)."""
+    if count > len(offsets):
+        raise ValueError(f"archive has {len(offsets)} files, cannot keep {count}")
+    if count == len(offsets):
+        return bytes(data), list(offsets)
+    shift = 4 * (len(offsets) - count)
+    body = data[4 + 4 * len(offsets):offsets[count]]
+    out_offsets = [o - shift for o in offsets[:count]]
+    return struct.pack(f">I{count}I", count, *out_offsets) + body, out_offsets
 
 
 def append_files(data, offsets, payloads):
@@ -176,3 +219,134 @@ def encode_cmpr(img, keep=None):
                     block = [px[x0 + x, y0 + y] for y in range(4) for x in range(4)]
                     out += encode_cmpr_block(block)
     return bytes(out)
+
+
+def decode_rgb565(data, w, h):
+    """An RGB565 texture (4x4 tiles, big-endian) as an RGBA image."""
+    from PIL import Image
+    img = Image.new("RGBA", (w, h))
+    px = img.load()
+    pos = 0
+    for ty in range(0, h, 4):
+        for tx in range(0, w, 4):
+            for y in range(4):
+                for x in range(4):
+                    v = struct.unpack_from(">H", data, pos)[0]
+                    pos += 2
+                    if tx + x < w and ty + y < h:
+                        px[tx + x, ty + y] = _rgb565(v) + (255,)
+    return img
+
+
+def encode_rgb565(img):
+    """An image as RGB565 texture data (4x4 tiles, big-endian); alpha is dropped. Width and height must be
+    multiples of 4."""
+    w, h = img.size
+    if w % 4 or h % 4:
+        raise ValueError(f"RGB565 texture size {w}x{h} is not a multiple of 4")
+    px = img.convert("RGB").load()
+    out = bytearray()
+    for ty in range(0, h, 4):
+        for tx in range(0, w, 4):
+            for y in range(4):
+                for x in range(4):
+                    out += struct.pack(">H", _to565(px[tx + x, ty + y]))
+    return bytes(out)
+
+
+def _rgb5a3(v):
+    if v & 0x8000:
+        r, g, b = (v >> 10) & 31, (v >> 5) & 31, v & 31
+        return (r << 3 | r >> 2, g << 3 | g >> 2, b << 3 | b >> 2, 255)
+    a, r, g, b = (v >> 12) & 7, (v >> 8) & 15, (v >> 4) & 15, v & 15
+    return (r * 17, g * 17, b * 17, a * 36)
+
+
+def _to5a3(rgba):
+    r, g, b, a = rgba
+    if a == 255:
+        return 0x8000 | (r >> 3) << 10 | (g >> 3) << 5 | b >> 3
+    return (a >> 5) << 12 | (r >> 4) << 8 | (g >> 4) << 4 | b >> 4
+
+
+def decode_rgb5a3(data, w, h):
+    """An RGB5A3 texture (4x4 tiles, big-endian; opaque pixels 1RRRRRGGGGGBBBBB, others 0AAARRRRGGGGBBBB) as an
+    RGBA image."""
+    from PIL import Image
+    img = Image.new("RGBA", (w, h))
+    px = img.load()
+    pos = 0
+    for ty in range(0, h, 4):
+        for tx in range(0, w, 4):
+            for y in range(4):
+                for x in range(4):
+                    v = struct.unpack_from(">H", data, pos)[0]
+                    pos += 2
+                    if tx + x < w and ty + y < h:
+                        px[tx + x, ty + y] = _rgb5a3(v)
+    return img
+
+
+def encode_rgb5a3(img):
+    """An image as RGB5A3 texture data (only alpha 255 is opaque; other alphas keep their top 3 bits). Width
+    and height must be multiples of 4. decode_rgb5a3 then encode_rgb5a3 gives back the same bytes."""
+    w, h = img.size
+    if w % 4 or h % 4:
+        raise ValueError(f"RGB5A3 texture size {w}x{h} is not a multiple of 4")
+    px = img.convert("RGBA").load()
+    out = bytearray()
+    for ty in range(0, h, 4):
+        for tx in range(0, w, 4):
+            for y in range(4):
+                for x in range(4):
+                    out += struct.pack(">H", _to5a3(px[tx + x, ty + y]))
+    return bytes(out)
+
+
+def encode_c8(img, colours=256):
+    """An image as a C8 texture: (palette bytes, RGB5A3 entries; index bytes, 8x4 tiles; palette size).
+    Quantized with alpha (Pillow's fast octree, Floyd-Steinberg dither). Width must be a multiple of 8 and
+    height of 4. Half the size of RGB5A3."""
+    from PIL import Image
+    w, h = img.size
+    if w % 8 or h % 4:
+        raise ValueError(f"C8 texture size {w}x{h} is not a multiple of 8x4")
+    quantized = img.convert("RGBA").quantize(colours, method=Image.Quantize.FASTOCTREE,
+                                             dither=Image.Dither.FLOYDSTEINBERG)
+    rgba = quantized.getpalette(rawmode="RGBA")
+    count = len(rgba) // 4
+    palette = b"".join(struct.pack(">H", _to5a3(tuple(rgba[4 * i:4 * i + 4]))) for i in range(count))
+    px = quantized.load()
+    out = bytearray()
+    for ty in range(0, h, 4):
+        for tx in range(0, w, 8):
+            for y in range(4):
+                out += bytes(px[tx + x, ty + y] for x in range(8))
+    return palette, bytes(out), count
+
+
+def decode_c8(palette, data, w, h):
+    """A C8 texture with an RGB5A3 palette as an RGBA image."""
+    from PIL import Image
+    colours = [_rgb5a3(v) for v in struct.unpack(f">{len(palette) // 2}H", palette)]
+    img = Image.new("RGBA", (w, h))
+    px = img.load()
+    pos = 0
+    for ty in range(0, h, 4):
+        for tx in range(0, w, 8):
+            for y in range(4):
+                for x in range(8):
+                    px[tx + x, ty + y] = colours[data[pos]]
+                    pos += 1
+    return img
+
+
+def replace_file(data, offsets, index, payload):
+    """Return (archive, offsets) with file `index` replaced by `payload` (packed with pack_file)."""
+    start, end = file_bounds(data, offsets, index)
+    blob = pack_file(payload)
+    delta = len(blob) - (end - start)
+    new_offsets = [o + delta if o > start else o for o in offsets]
+    body = data[:start] + blob + data[end:]
+    header = struct.pack(f">I{len(offsets)}I", len(offsets), *new_offsets)
+    return header + body[4 + 4 * len(offsets):], new_offsets

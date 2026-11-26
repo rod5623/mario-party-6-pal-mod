@@ -685,7 +685,8 @@ def patch_capsule():
     """Append the wheel model as capsule.bin entry 86 (0x140056), after the Star Trap orb's entry 85."""
     source = CAPSULE_OUTPUT if CAPSULE_OUTPUT.exists() else CAPSULE_SOURCE
     entries = trap.capsule_entries(source.read_bytes())
-    if len(entries) not in (86, 87):
+    # 88, 89: pagoda_board's entries 87 (orb list) and 88 (Cannon model); dropped here, re-added when it runs later
+    if len(entries) not in (86, 87, 88, 89):
         raise SystemExit(f"capsule.bin has {len(entries)} entries: run apply_star_trap_orb_patch.py first (expected 86)")
     entries = entries[:86] + [trap.compress_entry(WHEEL_HSF.read_bytes())]
     CAPSULE_OUTPUT.parent.mkdir(parents=True, exist_ok=True)

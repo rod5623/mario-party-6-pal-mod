@@ -31,6 +31,13 @@ def test_read_file_uncompressed_and_unknown_type():
         mpdata.read_file(data, offsets, 1)
 
 
+def test_read_file_lz():
+    # one flag byte (literal, literal, then a 4-byte reference to the window start, where "AB" landed)
+    lz = struct.pack(">II", 6, mpdata.TYPE_LZ) + b"\x03AB" + bytes([958 & 0xFF, (958 >> 2) & ~0x3F | 1])
+    data, offsets = make_archive([b"", b"z"], packed={0: lz})
+    assert mpdata.read_file(data, offsets, 0) == b"ABABAB"
+
+
 def test_read_archive(tmp_path):
     data, offsets = make_archive(PAYLOADS)
     path = tmp_path / "a.bin"
@@ -55,6 +62,17 @@ def test_append_files():
     for i in range(3):
         old = data[slice(*mpdata.file_bounds(data, offsets, i))]
         assert out[out_offsets[i]:out_offsets[i] + len(old)] == old
+
+
+def test_keep_files_undoes_append_files():
+    data, offsets = make_archive(PAYLOADS)
+    grown, grown_offsets = mpdata.append_files(data, offsets, [b"appended", b"another one"])
+    assert mpdata.keep_files(grown, grown_offsets, 3) == (data, offsets)
+    assert mpdata.keep_files(data, offsets, 3) == (data, offsets)
+    one, one_offsets = mpdata.keep_files(data, offsets, 1)
+    assert one_offsets == [8] and mpdata.read_file(one, one_offsets, 0) == PAYLOADS[0]
+    with pytest.raises(ValueError):
+        mpdata.keep_files(data, offsets, 4)
 
 
 def solid(colour, size=8):
@@ -104,3 +122,75 @@ def test_parse_anm_bitmaps():
     info = mpdata.parse_anm(bytes(blob))
     assert info["banks"] == 1 and info["pats"] == 2
     assert info["bmps"] == [dict(pix=4, fmt=0xE, pal=0, w=64, h=32, size=0x400, pal_o=0, data_o=0x100)]
+
+
+def test_replace_file():
+    data, offsets = make_archive(PAYLOADS)
+    for index, payload in ((0, b"a much longer first file " * 20), (1, b"short"), (2, b"last one")):
+        new, new_offsets = mpdata.replace_file(data, offsets, index, payload)
+        expected = list(PAYLOADS)
+        expected[index] = payload
+        assert [mpdata.read_file(new, new_offsets, i) for i in range(3)] == expected
+        assert list(struct.unpack_from(">4I", new, 0)) == [3, *new_offsets]
+
+
+def test_rgb565_round_trip():
+    img = Image.new("RGBA", (8, 4))
+    colours = [(255, 0, 0), (0, 255, 0), (0, 0, 255), (248, 252, 248), (0, 0, 0), (16, 32, 64), (200, 100, 8),
+               (8, 4, 8)]
+    for x, colour in enumerate(colours):
+        for y in range(4):
+            img.putpixel((x, y), colour + (255,))
+    data = mpdata.encode_rgb565(img)
+    assert len(data) == 8 * 4 * 2
+    back = mpdata.decode_rgb565(data, 8, 4)
+    for x, colour in enumerate(colours):
+        r, g, b, a = back.getpixel((x, 0))
+        assert a == 255 and abs(r - colour[0]) < 8 and abs(g - colour[1]) < 4 and abs(b - colour[2]) < 8
+
+
+def test_rgb565_tile_order():
+    """Pixel (4, 0) is the first of the second 4x4 tile: word 16."""
+    img = Image.new("RGB", (8, 4), (0, 0, 0))
+    img.putpixel((4, 0), (255, 255, 255))
+    data = mpdata.encode_rgb565(img)
+    assert struct.unpack_from(">H", data, 32)[0] == 0xFFFF
+    assert data.count(b"\xff") == 2
+
+
+def test_rgb565_rejects_odd_sizes():
+    with pytest.raises(ValueError):
+        mpdata.encode_rgb565(Image.new("RGB", (6, 4)))
+
+
+def test_rgb5a3_round_trip():
+    # every opaque colour code and every translucent alpha level survive decode -> encode unchanged
+    words = [0x8000 | v for v in range(0, 0x8000, 97)] + [a << 12 | v for a in range(8) for v in (0x000, 0x5A3, 0xFFF)]
+    words += [0] * (-len(words) % 16)
+    raw = struct.pack(f">{len(words)}H", *words)
+    w, h = 4 * (len(words) // 16), 4
+    image = mpdata.decode_rgb5a3(raw, w, h)
+    assert mpdata.encode_rgb5a3(image) == raw
+
+
+def test_rgb5a3_opaque_only_at_full_alpha():
+    image = Image.new("RGBA", (4, 4), (255, 0, 0, 255))
+    image.putpixel((1, 0), (255, 0, 0, 254))
+    words = struct.unpack(">16H", mpdata.encode_rgb5a3(image))
+    assert words[0] == 0xFC00 and words[1] == 0x7F00
+    with pytest.raises(ValueError):
+        mpdata.encode_rgb5a3(Image.new("RGBA", (6, 4)))
+
+
+def test_c8_round_trip_with_few_colours():
+    image = Image.new("RGBA", (16, 8), (255, 0, 0, 255))
+    for x in range(8):
+        image.putpixel((x, 3), (0, 0, 255, 255))
+    image.putpixel((15, 7), (0, 0, 0, 0))
+    palette, data, count = mpdata.encode_c8(image)
+    assert len(data) == 16 * 8 and len(palette) == 2 * count
+    back = mpdata.decode_c8(palette, data, 16, 8)
+    assert back.getpixel((0, 0)) == (255, 0, 0, 255) and back.getpixel((2, 3)) == (0, 0, 255, 255)
+    assert back.getpixel((15, 7))[3] == 0
+    with pytest.raises(ValueError):
+        mpdata.encode_c8(Image.new("RGBA", (12, 4)))

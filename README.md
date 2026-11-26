@@ -40,9 +40,10 @@ message banks, data archives and the rules that keep patches from breaking each 
 |---|---|
 | `src/` | The decomp project: `configure.py`, `config/` (symbols and splits), `src/` and `include/` (C code, including the Close Call minigame), `tools/` (patch scripts and their assets). |
 | `src/orig/GP6P01/` | **You add this:** the disc extracted with Dolphin. The build reads it. Not tracked. |
+| `src/orig/GP7P01.iso`, `src/orig/pagoda_screens/` | **You add these for Pagoda Peak:** your Mario Party 7 disc and a board picture (Setup, step 5). Not tracked. |
 | `root/` | **You add this:** the disc extracted with GameCube Rebuilder. The patches are copied in here and an ISO is rebuilt from it. Not tracked. |
 | `boards/` | Design notes and reference images for the board changes. |
-| `plans/` | Design and research notes: bonus stars, orbs, minigame pools, Faire Square. |
+| `plans/` | Design and research notes: bonus stars, orbs, minigame pools, Faire Square, the Pagoda Peak port. |
 | `backups/` | Board scripts save copies of board files here before editing them. Not tracked. |
 
 The scripts use these relative paths, so keep the folders side by side.
@@ -95,6 +96,17 @@ compare decompiled functions with the original. `configure.py` writes its `objdi
    `root/`, so that you get `root/&&systemdata/Start.dol`, `root/data/`, `root/dll/` and so on.
    Keep a copy of this clean `root/` somewhere else. You'll need it to undo the patches.
 4. **Copy the ISO itself** to `src/orig/GP6P01.iso`. `build_iso` uses it as the base disc.
+5. **For Pagoda Peak** (the new 7th party board, ported from Mario Party 7), the steps
+   `pagoda_peak` and `pagoda_board` also need:
+   - your own **Mario Party 7 PAL disc** (GP7P01), as `src/orig/GP7P01.iso` or a Dolphin extract
+     in `src/orig/GP7P01/`;
+   - a picture of the whole board for its board select art, saved as
+     `src/orig/pagoda_screens/Pagoda_Peak_-_Mario_Party_7.png`. For example, use the Super Mario
+     Wiki's 1575x2000 board image. See `src/tools/pagoda/select_art.py`.
+
+   Without them the full run stops at `pagoda_peak`. To build without Pagoda Peak, leave out
+   `clone_board`, `pagoda_peak` and `pagoda_board`, and also `party_pages`, because the board
+   select can't load its page-2 pictures without `pagoda_board`.
 
 ## Build and patch
 

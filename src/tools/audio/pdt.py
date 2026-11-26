@@ -52,6 +52,24 @@ def track_from_dsp(left_blob, right_blob, volume=0x61, pan=0x40):
     return Track(3 if lflag else 1, volume, pan, rate, ln, lstart if lflag else 2, ldata, rdata, (lcoef, rcoef))
 
 
+def read_track(blob, index):
+    """Track `index` of a PDT archive (its bytes) as a Track for append_tracks, e.g. from MP7_Str.pdt (same format)."""
+    version, count, _, _, _, ids_off, coef_off, _, _ = struct.unpack_from(HEADER, blob, 0)
+    if version != 1:
+        raise ValueError("unexpected PDT version")
+    if not 0 <= index < count:
+        raise IndexError(f"track {index} not in 0..{count - 1}")
+    header = struct.unpack_from(TRACK, blob, struct.unpack_from(">I", blob, ids_off + 4 * index)[0])
+    flags, volume, pan, _, rate, nibbles, loop_start, left, left_set, _, right, right_set, _ = header
+    size = (nibbles + 1) // 2
+
+    def coef(n):
+        return blob[coef_off + COEF_SIZE * n:coef_off + COEF_SIZE * (n + 1)]
+
+    return Track(flags, volume, pan, rate, nibbles, loop_start, blob[left:left + size], blob[right:right + size],
+                 (coef(left_set), coef(right_set)))
+
+
 def read_header(path):
     with open(path, "rb") as f:
         head = f.read(0x40)

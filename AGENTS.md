@@ -21,8 +21,12 @@ in `src/src/REL/`. No game files are in the repo.
 Audio changes (sound effects, voice clips, music) and how to make new ones:
 [src/docs/audio.md](src/docs/audio.md).
 
+Adding a new party board (beyond MP6's six, as Pagoda Peak did):
+[src/docs/adding-a-board.md](src/docs/adding-a-board.md). It lists what already scales to more boards
+and what is still fixed to board 11.
+
 Design notes: `boards/<board>/*.md` (board space numbers, layouts) and `plans/*/` (bonus stars,
-orbs, minigame pools).
+orbs, minigame pools, the Pagoda Peak port).
 
 ## Hard rules
 

@@ -20,7 +20,7 @@ README = (TOOLS / "README.md").read_text(encoding="utf-8")
 STEPS = apply_all.STEPS
 TEST_AIDS = apply_all.TEST_AIDS
 
-OUR_PACKAGES = ("lib", "patches", "patches/test_aids", "audio", "closecall", "scripts")
+OUR_PACKAGES = ("lib", "patches", "patches/test_aids", "audio", "closecall", "pagoda", "scripts")
 # decomp build tooling from the upstream template (and apply_all, which runs as a plain script
 # with `python tools/apply_all.py`, so it can't import tools.lib.paths)
 UPSTREAM = {"project.py", "download_tool.py", "decompctx.py", "transform_dep.py", "upload_progress.py",
